@@ -10,8 +10,6 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError.js");
 const dbURL = process.env.ATLASDB_URL;
-const listings = require("./routes/listing.js");
-const reviews = require("./routes/review.js");
 const session = require("express-session");
 const MongoStore = require('connect-mongo').default;
 const flash = require("connect-flash");
@@ -54,23 +52,28 @@ store.on("error", (err) => {
   console.log("ERROR in MONGO SESSION STORE", err);
 });
 
+
 const sessionOptions = {
   store,
   secret: process.env.SECRET,
   resave: false,
-  saveUninitialized: true,
-  cookie: {
-    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-    httpOnly: true,
-  },
+  saveUninitialized: false,
+ cookie: {
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "lax",
+},
 };
+
 
 // app.get("/", (req, res) => {
 //   res.send("Hi, I am root");
 // });
 
-
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
 
 app.use(session(sessionOptions));
 app.use(flash());

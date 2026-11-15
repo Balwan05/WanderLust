@@ -13,6 +13,12 @@ const { destroyListing } = require("../controllers/listing.js");
 //POST Review Route
 router.post("/", isLoggedIn, validateReview, wrapAsync(reviewController.createReview));
 
+router.get(
+  "/:reviewId/edit",
+  isLoggedIn,
+  isReviewAuthor,
+  wrapAsync(reviewController.renderEditForm)
+);
 
 router.put(
   "/:reviewId",

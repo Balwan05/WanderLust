@@ -136,15 +136,27 @@
             <p class="card-text"><%= review.comment %></p>
           </div>
 
-          <% if (currUser && review.author._id.equals(currUser._id)) { %>
-            <form
-              class="mb-3"
-              method="POST"
-              action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
-            >
-              <button class="btn btn-sm btn-dark">Delete</button>
-            </form>
-          <% } %>
+         
+<% if (currUser && review.author._id.equals(currUser._id)) { %>
+  <div class="d-flex gap-2 mb-3 ms-3">
+
+    <a
+      href="/listings/<%= listing._id %>/reviews/<%= review._id %>/edit"
+      class="btn btn-sm btn-outline-dark"
+    >
+      Edit
+    </a>
+
+    <form
+      method="POST"
+      action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
+    >
+      <button class="btn btn-sm btn-dark">Delete</button>
+    </form>
+
+  </div>
+<% } %>
+
 
         </div>
       <% } %>

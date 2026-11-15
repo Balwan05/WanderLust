@@ -47,6 +47,19 @@ module.exports.destroyReview = async (req, res) => {
   res.redirect(`/listings/${id}`);
 };
 
+module.exports.renderEditForm = async (req, res) => {
+  let { id, reviewId } = req.params;
+
+  let review = await Review.findById(reviewId);
+
+  if (!review) {
+    req.flash("error", "Review not found!");
+    return res.redirect(`/listings/${id}`);
+  }
+
+  res.render("reviews/edit.ejs", { review, listingId: id });
+};
+
 
 module.exports.updateReview = async (req, res) => {
   let { id, reviewId } = req.params;
